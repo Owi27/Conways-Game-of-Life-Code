@@ -13,9 +13,13 @@ namespace GOLStartUpTemplate
 {
     public partial class Form1 : Form
     {
+        // Ints for Universe and Scratchpad
+        int xWidth = 0;
+        int yHeight = 0;
+
         // The universe array
-        bool[,] universe = new bool[15, 15];
-        bool[,] scratch = new bool[15, 15];
+        bool[,] universe = new bool[30, 30];
+        bool[,] scratch = new bool[30, 30];
         private void Swap()
         {
             bool[,] temp = new bool[universe.GetLength(0), universe.GetLength(1)];
@@ -283,11 +287,6 @@ namespace GOLStartUpTemplate
         {
         }
 
-        private void gridSizeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void resetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.Reset();
@@ -498,6 +497,26 @@ namespace GOLStartUpTemplate
                 graphicsPanel1.Invalidate();
             }
 
+        }
+
+        // Grid and Time Settings
+        private void gridTimeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ModalDialog dlg = new ModalDialog();
+
+            dlg.SetTimeNum(timer.Interval);
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                timer.Interval = dlg.GetTimeNum();
+                xWidth = dlg.GetGridX();
+                yHeight = dlg.GetGridY();
+
+                universe = new bool[xWidth, yHeight];
+                scratch = new bool[xWidth, yHeight];
+
+                graphicsPanel1.Invalidate();
+            }
         }
     }
 }
