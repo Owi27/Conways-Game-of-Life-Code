@@ -37,25 +37,23 @@ namespace GOLStartUpTemplate.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("15")]
-        public int IntX {
+        public global::System.Drawing.Color GridColor {
             get {
-                return ((int)(this["IntX"]));
+                return ((global::System.Drawing.Color)(this["GridColor"]));
             }
             set {
-                this["IntX"] = value;
+                this["GridColor"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("15")]
-        public int IntY {
+        public global::System.Drawing.Color CellColor {
             get {
-                return ((int)(this["IntY"]));
+                return ((global::System.Drawing.Color)(this["CellColor"]));
             }
             set {
-                this["IntY"] = value;
+                this["CellColor"] = value;
             }
         }
     }

@@ -58,6 +58,7 @@ namespace GOLStartUpTemplate
             //timer.Enabled = true; // start timer running
         }
 
+        // Count Neighbors
         private int CountNeighborsFinite(int x, int y)
         {
             int count = 0;
@@ -189,7 +190,10 @@ namespace GOLStartUpTemplate
                     }
 
                     // Outline the cell with a pen
+                    if (count > 0)
+                    {
                     e.Graphics.DrawString(count.ToString(), font, Brushes.DarkSlateGray, cellRect, sformat);
+                    }
 
                     e.Graphics.DrawRectangle(gridPen, cellRect.X, cellRect.Y, cellRect.Width, cellRect.Height);
                 }
@@ -268,24 +272,6 @@ namespace GOLStartUpTemplate
             graphicsPanel1.Invalidate();
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
-        {
-            Random rng = new Random();
-            for (int y = 0; y < universe.GetLength(1); y++)
-            {
-                // Iterate through the universe in the x, left to right
-                for (int x = 0; x < universe.GetLength(0); x++)
-                {
-                    int num = rng.Next(0, 2);
-                    if (num == 0)
-                    {
-                        scratch[x, y] = true;
-                    }
-                }
-            }
-            Replace();
-        }
-
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
         {
 
@@ -295,14 +281,6 @@ namespace GOLStartUpTemplate
 
         private void colorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ColorDialog dlg = new ColorDialog();
-
-            dlg.Color = graphicsPanel1.BackColor;
-
-            if (DialogResult.OK == dlg.ShowDialog())
-            {
-                graphicsPanel1.BackColor = dlg.Color;
-            }
         }
 
         private void gridSizeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -342,6 +320,8 @@ namespace GOLStartUpTemplate
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             Properties.Settings.Default.PanelColor = graphicsPanel1.BackColor;
+            Properties.Settings.Default.GridColor = gridColor;
+            Properties.Settings.Default.CellColor = cellColor;
 
             Properties.Settings.Default.Save();
         }
@@ -351,6 +331,7 @@ namespace GOLStartUpTemplate
 
         }
 
+        // Open & Save 
         private void openToolStripButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
@@ -369,54 +350,46 @@ namespace GOLStartUpTemplate
                 {
                     string row = reader.ReadLine();
 
-                    if (row[0] == '!')
+                    if (row.StartsWith("!"))
                     {
-
+                        continue;
                     }
-                    else
+                    else if (!row.StartsWith("!"))
                     {
                         mHeight++;
+                        mWidth = row.Length;
                     }
-
-                    mWidth = row.Length;
                 }
-
-                bool[,] hold = new bool[mWidth, mHeight];
-                universe = hold;
-                scratch = hold;
+                universe = new bool[mWidth, mHeight];
+                scratch = new bool[mWidth, mHeight];
 
                 reader.BaseStream.Seek(0, SeekOrigin.Begin);
 
+                int yPos = 0;
                 while (!reader.EndOfStream)
                 {
                     string row = reader.ReadLine();
-                    if (row[0] == '!')
+                    if (row.StartsWith("!"))
                     {
-
+                        continue;
                     }
                     else
                     {
                         for (int xPos = 0; xPos < row.Length; xPos++)
                         {
-                            for (int y = 0; y < universe.GetLength(1); y++)
+                            if (row[xPos] == 'O')
                             {
-                                for (int x = 0; x < universe.GetLength(0); x++)
-                                {
-                                    if (row[xPos] == 'O')
-                                    {
-                                        universe[x, y] = true;
-                                    }
-                                    else if (row[xPos] == '.')
-                                    {
-                                        universe[x, y] = false;
-                                    }
-                                }
+                                universe[xPos, yPos] = true;
+                            }
+                            else if (row[xPos] == '.')
+                            {
+                                universe[xPos, yPos] = false;
                             }
                         }
+                        yPos++;
                     }
                 }
                 reader.Close();
-                
             }
             graphicsPanel1.Invalidate();
         }
@@ -452,6 +425,79 @@ namespace GOLStartUpTemplate
                 writer.Close();
 
             }
+        }
+        
+        // Randoms
+        private void randomizeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void randomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Random rng = new Random();
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                // Iterate through the universe in the x, left to right
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    int num = rng.Next(0, 2);
+                    if (num == 0)
+                    {
+                        scratch[x, y] = true;
+                    }
+                }
+            }
+            Replace();
+
+        }
+
+        private void randomSeedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        // Color Settings
+        private void cellColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+
+            dlg.Color = cellColor;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                cellColor = dlg.Color;
+
+                graphicsPanel1.Invalidate();
+            }
+        }
+
+        private void boardColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+
+            dlg.Color = graphicsPanel1.BackColor;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                graphicsPanel1.BackColor = dlg.Color;
+
+                graphicsPanel1.Invalidate();
+            }
+        }
+
+        private void gridColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+
+            dlg.Color = graphicsPanel1.BackColor;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                gridColor = dlg.Color;
+
+                graphicsPanel1.Invalidate();
+            }
+
         }
     }
 }
