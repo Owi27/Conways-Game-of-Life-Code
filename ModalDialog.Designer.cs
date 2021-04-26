@@ -65,7 +65,7 @@ namespace GOLStartUpTemplate
             // 
             // TimerUpDown3
             // 
-            this.TimerUpDown3.Location = new System.Drawing.Point(140, 35);
+            this.TimerUpDown3.Location = new System.Drawing.Point(151, 51);
             this.TimerUpDown3.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -74,10 +74,11 @@ namespace GOLStartUpTemplate
             this.TimerUpDown3.Name = "TimerUpDown3";
             this.TimerUpDown3.Size = new System.Drawing.Size(120, 20);
             this.TimerUpDown3.TabIndex = 4;
+            this.TimerUpDown3.ValueChanged += new System.EventHandler(this.TimerUpDown3_ValueChanged);
             // 
             // GridXUpDown1
             // 
-            this.GridXUpDown1.Location = new System.Drawing.Point(140, 62);
+            this.GridXUpDown1.Location = new System.Drawing.Point(151, 78);
             this.GridXUpDown1.Minimum = new decimal(new int[] {
             1,
             0,
@@ -91,10 +92,11 @@ namespace GOLStartUpTemplate
             0,
             0,
             0});
+            this.GridXUpDown1.ValueChanged += new System.EventHandler(this.GridXUpDown1_ValueChanged);
             // 
             // GridYUpDown2
             // 
-            this.GridYUpDown2.Location = new System.Drawing.Point(140, 89);
+            this.GridYUpDown2.Location = new System.Drawing.Point(151, 105);
             this.GridYUpDown2.Minimum = new decimal(new int[] {
             1,
             0,
@@ -113,16 +115,17 @@ namespace GOLStartUpTemplate
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(27, 37);
+            this.label1.Location = new System.Drawing.Point(38, 53);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(107, 13);
             this.label1.TabIndex = 7;
             this.label1.Text = "Timer(in MiliSeconds)";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(75, 64);
+            this.label2.Location = new System.Drawing.Point(86, 80);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(59, 13);
             this.label2.TabIndex = 8;
@@ -132,7 +135,7 @@ namespace GOLStartUpTemplate
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(75, 91);
+            this.label3.Location = new System.Drawing.Point(86, 107);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(59, 13);
             this.label3.TabIndex = 9;

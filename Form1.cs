@@ -452,7 +452,26 @@ namespace GOLStartUpTemplate
 
         private void randomSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            RandomDLG dlg = new RandomDLG();
 
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                Random rng = new Random(dlg.Seed);
+
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+                    for (int x = 0; x < universe.GetLength(0); x++)
+                    {
+                        int num = rng.Next(0, 2);
+                        if (num == 0)
+                        {
+                            scratch[x, y] = true;
+                        }
+                    }
+                }
+                Replace();
+
+            }
         }
 
         // Color Settings
