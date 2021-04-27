@@ -37,6 +37,7 @@ namespace GOLStartUpTemplate.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
         public global::System.Drawing.Color GridColor {
             get {
                 return ((global::System.Drawing.Color)(this["GridColor"]));
@@ -48,12 +49,49 @@ namespace GOLStartUpTemplate.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LightPink")]
         public global::System.Drawing.Color CellColor {
             get {
                 return ((global::System.Drawing.Color)(this["CellColor"]));
             }
             set {
                 this["CellColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int Timer {
+            get {
+                return ((int)(this["Timer"]));
+            }
+            set {
+                this["Timer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public int GridX {
+            get {
+                return ((int)(this["GridX"]));
+            }
+            set {
+                this["GridX"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public int GridY {
+            get {
+                return ((int)(this["GridY"]));
+            }
+            set {
+                this["GridY"] = value;
             }
         }
     }

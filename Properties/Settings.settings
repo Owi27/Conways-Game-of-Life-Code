@@ -6,10 +6,19 @@
       <Value Profile="(Default)">BlanchedAlmond</Value>
     </Setting>
     <Setting Name="GridColor" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">Black</Value>
     </Setting>
     <Setting Name="CellColor" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">LightPink</Value>
+    </Setting>
+    <Setting Name="Timer" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="GridX" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">30</Value>
+    </Setting>
+    <Setting Name="GridY" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">30</Value>
     </Setting>
   </Settings>
 </SettingsFile>

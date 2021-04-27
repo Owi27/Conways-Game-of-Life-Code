@@ -54,10 +54,17 @@ namespace GOLStartUpTemplate
 
             //Read Settings
             graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
+            cellColor = Properties.Settings.Default.CellColor;
+            gridColor = Properties.Settings.Default.GridColor;
+            timer.Interval = Properties.Settings.Default.Timer;
+            xWidth = Properties.Settings.Default.GridX;
+            yHeight = Properties.Settings.Default.GridY;
 
+            universe = new bool[xWidth, yHeight];
+            scratch = new bool[xWidth, yHeight];
 
             // Setup the timer
-            timer.Interval = 100; // milliseconds
+            //timer.Interval = 100; // milliseconds
             timer.Tick += Timer_Tick;
             //timer.Enabled = true; // start timer running
         }
@@ -292,6 +299,11 @@ namespace GOLStartUpTemplate
             Properties.Settings.Default.Reset();
 
             graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
+            cellColor = Properties.Settings.Default.CellColor;
+            gridColor = Properties.Settings.Default.GridColor;
+            timer.Interval = Properties.Settings.Default.Timer;
+            xWidth = Properties.Settings.Default.GridX;
+            yHeight = Properties.Settings.Default.GridY;
 
         }
 
@@ -300,6 +312,11 @@ namespace GOLStartUpTemplate
             Properties.Settings.Default.Reload();
 
             graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
+            cellColor = Properties.Settings.Default.CellColor;
+            gridColor = Properties.Settings.Default.GridColor;
+            timer.Interval = Properties.Settings.Default.Timer;
+            xWidth = Properties.Settings.Default.GridX;
+            yHeight = Properties.Settings.Default.GridY;
 
         }
 
@@ -321,6 +338,9 @@ namespace GOLStartUpTemplate
             Properties.Settings.Default.PanelColor = graphicsPanel1.BackColor;
             Properties.Settings.Default.GridColor = gridColor;
             Properties.Settings.Default.CellColor = cellColor;
+            Properties.Settings.Default.Timer = timer.Interval;
+            Properties.Settings.Default.GridX = xWidth;
+            Properties.Settings.Default.GridY = yHeight;
 
             Properties.Settings.Default.Save();
         }
@@ -524,15 +544,25 @@ namespace GOLStartUpTemplate
             ModalDialog dlg = new ModalDialog();
 
             dlg.SetTimeNum(timer.Interval);
+            dlg.SetGridX(xWidth);
+            dlg.SetGridY(yHeight);
 
             if (DialogResult.OK == dlg.ShowDialog())
             {
                 timer.Interval = dlg.GetTimeNum();
+
+                int xTemp = xWidth;
+                int yTemp = yHeight;
+
                 xWidth = dlg.GetGridX();
                 yHeight = dlg.GetGridY();
 
+
+                if (xTemp != xWidth | yTemp != yHeight)
+                {
                 universe = new bool[xWidth, yHeight];
                 scratch = new bool[xWidth, yHeight];
+                }
 
                 graphicsPanel1.Invalidate();
             }
