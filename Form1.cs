@@ -45,7 +45,6 @@ namespace GOLStartUpTemplate
 
         // Generation count
         int generations = 0;
-        int alive = 0;
 
         public Form1()
         {
@@ -120,11 +119,6 @@ namespace GOLStartUpTemplate
                 {
                     int count = CountNeighborsFinite(x, y);
 
-                    if (universe[x, y] == true)
-                    {
-                        alive++;
-                    }
-
                     if (universe[x, y] == true && count < 2)
                     {
                         scratch[x, y] = false;
@@ -149,14 +143,31 @@ namespace GOLStartUpTemplate
             generations++;
 
             // Update status strip generations
-            toolStripStatusAlive.Text = "Cells Alive = " + alive.ToString();
+            //toolStripStatusAlive.Text = "Cells Alive = " + alive.ToString();
             toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
         }
 
         // The event called by the timer every Interval milliseconds.
         private void Timer_Tick(object sender, EventArgs e)
         {
-            NextGeneration();
+            int test = 0;
+
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    if (universe[x, y] == true)
+                    {
+                        test++;
+                    }
+                }
+            }
+
+            CountCells();
+            if (test > 0)
+            {
+                NextGeneration();
+            }
         }
 
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
@@ -203,7 +214,7 @@ namespace GOLStartUpTemplate
                     // Outline the cell with a pen
                     if (count > 0)
                     {
-                    e.Graphics.DrawString(count.ToString(), font, Brushes.DarkSlateGray, cellRect, sformat);
+                        e.Graphics.DrawString(count.ToString(), font, Brushes.DarkSlateGray, cellRect, sformat);
                     }
 
                     e.Graphics.DrawRectangle(gridPen, cellRect.X, cellRect.Y, cellRect.Width, cellRect.Height);
@@ -232,7 +243,7 @@ namespace GOLStartUpTemplate
 
                 // Toggle the cell's state
                 universe[x, y] = !universe[x, y];
-
+                CountCells();
                 // Tell Windows you need to repaint
                 graphicsPanel1.Invalidate();
             }
@@ -410,6 +421,7 @@ namespace GOLStartUpTemplate
                 }
                 reader.Close();
             }
+            CountCells();
             graphicsPanel1.Invalidate();
         }
 
@@ -445,7 +457,7 @@ namespace GOLStartUpTemplate
 
             }
         }
-        
+
         // Randoms
         private void randomizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -560,11 +572,128 @@ namespace GOLStartUpTemplate
 
                 if (xTemp != xWidth | yTemp != yHeight)
                 {
-                universe = new bool[xWidth, yHeight];
-                scratch = new bool[xWidth, yHeight];
+                    universe = new bool[xWidth, yHeight];
+                    scratch = new bool[xWidth, yHeight];
                 }
 
                 graphicsPanel1.Invalidate();
+            }
+        }
+
+        // Count Cells
+        private void CountCells()
+        {
+            int alive = 0;
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    if (universe[x, y] == true)
+                    {
+                        alive++;
+                        if (universe[x, y] == false)
+                        {
+                            alive--;
+                        }
+                    }
+                }
+            }
+            toolStripStatusAlive.Text = "Cells Alive = " + alive.ToString();
+        }
+
+        // Open & Save from File Button
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+
+            dlg.Filter = "All Files|*.*|Cells|*.cells";
+            dlg.FilterIndex = 2;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                StreamReader reader = new StreamReader(dlg.FileName);
+
+                int mWidth = 0;
+                int mHeight = 0;
+
+                while (!reader.EndOfStream)
+                {
+                    string row = reader.ReadLine();
+
+                    if (row.StartsWith("!"))
+                    {
+                        continue;
+                    }
+                    else if (!row.StartsWith("!"))
+                    {
+                        mHeight++;
+                        mWidth = row.Length;
+                    }
+                }
+                universe = new bool[mWidth, mHeight];
+                scratch = new bool[mWidth, mHeight];
+
+                reader.BaseStream.Seek(0, SeekOrigin.Begin);
+
+                int yPos = 0;
+                while (!reader.EndOfStream)
+                {
+                    string row = reader.ReadLine();
+                    if (row.StartsWith("!"))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        for (int xPos = 0; xPos < row.Length; xPos++)
+                        {
+                            if (row[xPos] == 'O')
+                            {
+                                universe[xPos, yPos] = true;
+                            }
+                            else if (row[xPos] == '.')
+                            {
+                                universe[xPos, yPos] = false;
+                            }
+                        }
+                        yPos++;
+                    }
+                }
+                reader.Close();
+            }
+            CountCells();
+            graphicsPanel1.Invalidate();
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dlg = new SaveFileDialog();
+
+            dlg.Filter = "All Files|*.*|Cells|*.cells";
+            dlg.FilterIndex = 2; dlg.DefaultExt = "cells";
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                StreamWriter writer = new StreamWriter(dlg.FileName);
+
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+                    string currentRow = string.Empty;
+
+                    for (int x = 0; x < universe.GetLength(0); x++)
+                    {
+                        if (universe[x, y] == true)
+                        {
+                            currentRow = currentRow + "O";
+                        }
+                        else if (universe[x, y] == false)
+                        {
+                            currentRow = currentRow + ".";
+                        }
+                    }
+                    writer.WriteLine(currentRow);
+                }
+                writer.Close();
             }
         }
     }
